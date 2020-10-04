@@ -7,6 +7,21 @@ class NewTransaction extends StatelessWidget {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
 
+  void submitData() {
+    final enteredTitle = titleController.text;
+    final enteredAmount = double.parse(amountController.text);
+
+    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+      // Scaffold.of(context).showSnackBar(SnackBar(content: Text('Something Went Wrong !'),),);
+      return;
+    }
+
+    addTx(
+      enteredTitle,
+      enteredAmount,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -23,23 +38,21 @@ class NewTransaction extends StatelessWidget {
               // },
               controller: titleController,
               decoration: InputDecoration(labelText: 'Title'),
+              onSubmitted: (_) => submitData(),
             ),
             TextField(
               // onChanged: (val) => inputAmount = val,
               controller: amountController,
               decoration: InputDecoration(labelText: 'Amount'),
+              keyboardType: TextInputType.number,
+              onSubmitted: (_) => submitData(),
             ),
             FlatButton(
-              onPressed: () {
-                addTx(
-                  titleController.text,
-                  double.parse(
-                    amountController.text,
-                  ),
-                );
-                // print(inputTitle);
-                //print(titleController.text);
-              },
+              onPressed: submitData,
+              //() {
+              // print(inputTitle);
+              //print(titleController.text);
+              // },
               child: Text('Add Transaction'),
               textColor: Colors.purple,
             ),
